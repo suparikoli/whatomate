@@ -28,6 +28,7 @@ Mark: `exists` (no work), `extend` (owner exists, add to it), `new` (nothing to 
 | SAAS-05 | Subscription billing with Cashfree | new | fork: `billing`. Catalogue `@mithtech-medusa/cashfree` is Medusa-only: reuse the flow, not the code |
 | SAAS-06 | Self-service signup and tenant onboarding | extend | fork: `auth.go`, `RegisterView.vue` |
 | SAAS-07 | Per-tenant branding: logo, colours, custom domain | new | fork: `Organization` settings |
+| SAAS-09 | Superadmin assigns a plan by hand for bundled Mithtech contracts (for example ERPNext implementation and maintenance); no online charge | new | fork: `billing` |
 | SAAS-08 | AGPL source link in the app footer | new | fork: frontend layout |
 | BRAND-01 | Rename every Whatomate name, logo and string to Polygin | extend | fork: frontend, i18n, docs, binary name |
 | BRAND-02 | Redesign all 50 views with TonalDepth, light and dark | extend | fork: `frontend/`. Blocker: `tonaldepth-vue` has 5 components; React has 103 |
@@ -43,7 +44,7 @@ Mark: `exists` (no work), `extend` (owner exists, add to it), `new` (nothing to 
 | APP-01 | Push notification service (FCM, APNs, desktop) | new | fork: new `push` package. `ntfynext` does not fit phones |
 | APP-02 | Desktop helper for macOS, Windows, Linux (Tauri) | new | new repo; needs approval (E23) |
 | APP-03 | iOS and Android apps: inbox, messaging, notifications (Capacitor) | new | new repo; needs approval (E23) |
-| APP-04 | Subscription management in the mobile apps | new | Risk: Apple and Google take a fee on in-app purchases |
+| APP-04 | Mobile apps show the plan and its status; buying happens on the web | new | mobile repo; no in-app purchase |
 
 ## Release 2
 
@@ -62,9 +63,9 @@ Mark: `exists` (no work), `extend` (owner exists, add to it), `new` (nothing to 
 2. A product named Polygin already runs at polyg.in (`polygin-main`: Express, MySQL, dormant). Both existing plugins call its API.
 3. Nothing in the fork covers billing, push, branding or duplicate protection.
 
-## Open decisions
+## Decisions
 
-- D1: How to close the TonalDepth Vue gap.
-- D2: What happens to old polyg.in customers and data.
-- D3: The domain for the new Polygin.
-- D4: Mobile subscriptions: in-app purchase or web only.
+- D1 (decided 2026-11-19): build out `tonaldepth-vue` to cover the redesign. Each component wraps Reka UI primitives. Work lands in the `tonaldepth` repo as wave 0 of BRAND-02.
+- D2 (decided 2026-11-19): start clean. No data or code comes from the old polyg.in server. No migration requirement.
+- D3 (decided 2026-11-19): keep `app.polyg.in`. The Meta app stays as registered.
+- D4 (decided 2026-11-19): web only. The apps show the plan and its status. Plans can also come bundled with a Mithtech contract (SAAS-09).
