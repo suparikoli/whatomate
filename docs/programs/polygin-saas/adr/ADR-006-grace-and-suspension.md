@@ -1,6 +1,6 @@
 # ADR-006: Grace period, then read-only suspension; inbound messages are kept
 
-Status: proposed (G1, module saas). Requirements: SAAS-03, SAAS-05. Numbers wait on open question 4.
+Status: proposed (G1, module saas). Requirements: SAAS-03, SAAS-05. Numbers wait on open question S4 (`../open-questions.md`).
 
 ## Context
 - A failed renewal should not cut off a tenant at once.
@@ -24,4 +24,4 @@ Status: proposed (G1, module saas). Requirements: SAAS-03, SAAS-05. Numbers wait
 
 ## Consequences
 - The grace and retention numbers live on `Plan` and in config, not in code.
-- The `apps` module must show the banner and the read-only state.
+- saas builds the banner and the read-only state in the web app. The app shells show them, because they load the hosted web app (ADR-060).

@@ -20,4 +20,4 @@ Status: proposed (G1 connect). Requirements: INT-06 to INT-09.
 
 ## Consequences
 - Every plugin need becomes a public API change. It goes through ADR-041 versioning.
-- The Tally connector placement is still open. It is a question in the connect G1 pack.
+- The Tally connector placement is still open. It is open question C4 in `../open-questions.md`.

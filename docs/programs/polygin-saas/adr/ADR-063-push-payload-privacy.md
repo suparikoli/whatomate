@@ -8,8 +8,8 @@ Status: proposed (G1, module `apps`).
 - Tenants differ: a clinic needs no text on lock screens; a shop may want full previews.
 
 ## Decision
-- Add `push_preview` to `Organization.Settings`: `hidden` ("New message"), `sender` (contact name only, the default), `full` (name and first 100 characters).
-- Users may lower the level in `User.Settings`. They may not raise it above the tenant level.
+- Add `push.preview` to `Organization.Settings` (namespace per ADR-080): `hidden` ("New message"), `sender` (contact name only, the default), `full` (name and first 100 characters).
+- Users may lower the level in `User.Settings.push.preview`. They may not raise it above the tenant level.
 - When the contact has no profile name, show "Customer", never the phone number.
 - Payloads never carry phone numbers, media, message ids or note text.
 - The data part carries only: event type, org id, contact id, path, badge, collapse key.

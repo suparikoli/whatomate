@@ -20,5 +20,5 @@ Status: proposed (G1, module saas). Requirements: SAAS-06, SAAS-01.
 - Keep join-by-ID and hide the UUIDs. Security by obscurity.
 
 ## Consequences
-- Signup needs a mail sender for verification and invites (open question 5).
+- Signup needs a mail sender for verification and invites (open question S5).
 - `RegisterView.vue` changes to a company signup form.

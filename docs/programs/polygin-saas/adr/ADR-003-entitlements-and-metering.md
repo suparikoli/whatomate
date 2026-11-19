@@ -11,8 +11,9 @@ Status: proposed (G1, module saas). Requirements: SAAS-04; contract for `connect
 - Store limits and feature flags as `PlanLimit` rows (key, value; -1 means unlimited).
 - A Superadmin `LimitOverride` row wins over the plan value for that subscription.
 - Keep the key registry in `internal/billing/keys.go`. Billing owns keys. Each module owns the counted records.
-- Count keys (`seats`, `wa_accounts`, `connected_apps`) count rows in their source table at check time.
+- Count keys (`seats`, `wa_accounts`, `connected_apps`) count rows at check time. The module that owns the rows registers the counter function (ADR-081).
 - Meter keys (`messages_out`, `ai_minutes`, `events_in`) use an atomic Redis script: check and increment in one step.
+- Rate keys (`events_per_min`) hold a per-minute value. The owning module's limiter enforces it (ADR-081).
 - A ticker flushes meters to `UsageCounter` (org, key, month) each minute. Redis rebuilds from it after a restart.
 - Expose four calls: read a limit, check a feature, check headroom, consume.
 - Return HTTP 402 `plan_limit_reached` with key, limit and used.

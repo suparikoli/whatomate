@@ -9,14 +9,15 @@ Status: proposed (G1, module saas). Requirements: SAAS-07, SAAS-08.
 - Rule E25 bans raw colours in the UI. All colour comes from TonalDepth tokens.
 
 ## Decision
-- Store logo (light and dark), favicon, product name and accent under `Settings.branding`.
+- Store the brand-ui branding payload under `Settings.branding`: brand colours per theme, logo and favicon files (ADR-083). The name comes from `Organization.Name`; no product name is stored.
 - Store logo files with the existing `[storage]` backend (local or S3).
-- Map the accent to TonalDepth token overrides. Reject an accent that fails 4.5:1 contrast in light or dark mode.
+- The colours are TonalDepth token overrides. The `tonaldepth-vue` contrast guard (4.5:1, light and dark) is the one rule. The screen shows the adjusted colour before save; the server checks format only (ADR-083).
 - Add `TenantDomain` with a unique hostname, a DNS TXT token and a status (pending, verified, active, failed).
 - Activate a domain only after the TXT check passes.
 - The TLS proxy asks Polygin before it issues a certificate. Polygin says yes only for active domains.
 - On a custom domain, the session's org must match the domain's org. Otherwise the request fails.
 - Serve `GET /api/public/branding` by host for the login page. It returns only public brand fields.
+- Serve `GET /api/branding` for the session org. The web app and the shells call it after login and after an org switch (ADR-083).
 - The AGPL source link stays in the footer on every tenant. Branding cannot remove it.
 - Gate branding and custom domains with plan features `feature.branding` and `feature.custom_domain`.
 
@@ -25,5 +26,5 @@ Status: proposed (G1, module saas). Requirements: SAAS-07, SAAS-08.
 - Custom domains as a JSONB key. No unique index, slow host lookup.
 
 ## Consequences
-- Needs a TLS proxy with on-demand certificates (open question 6).
-- The `brand` module owns the token override mechanism and the footer component.
+- Needs a TLS proxy with on-demand certificates (open question S6).
+- The `brand-ui` module owns the payload shape, the token override mechanism and the footer component.

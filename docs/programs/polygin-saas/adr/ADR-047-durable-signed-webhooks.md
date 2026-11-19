@@ -11,8 +11,8 @@ Status: proposed (G1 connect). Requirement: INT-02.
 - Add a new `webhook_deliveries` table: webhook, event, payload, attempt, next attempt, status, last code, last error.
 - Insert a delivery row instead of starting a goroutine. The worker sends rows with `FOR UPDATE SKIP LOCKED`.
 - Retry on network errors, 408, 429 and 5xx. Use 8 attempts: 30 s, 2 min, 10 min, 30 min, 1 h, 3 h, 6 h, 12 h.
-- Mark other 4xx answers and the last failure `dead`. Admin can replay a dead delivery. Connect tells `apps` for push.
-- Pause a webhook after 24 hours of failures. Tell the Admin.
+- Mark other 4xx answers and the last failure `dead`. Admin can replay a dead delivery. Connect calls `push.Enqueue` with `connect.delivery.dead` (ADR-084).
+- Pause a webhook after 24 hours of failures. Tell the Admin with `connect.webhook.paused` (ADR-084).
 - Keep `X-Webhook-Signature: sha256=<hmac of body>`.
 - Add `X-Polygin-Delivery-Id`, `X-Polygin-Timestamp`, and `X-Polygin-Signature: t=<ts>,v1=<hmac of ts.body>`. Receivers reject timestamps older than 5 minutes.
 - Add events `message.status`, `event.processed`, `event.failed`. Add `related_event_id` to `message.incoming` when the reply quotes an event's message.

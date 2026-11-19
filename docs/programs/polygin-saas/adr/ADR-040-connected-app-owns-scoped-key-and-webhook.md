@@ -13,6 +13,7 @@ Status: proposed (G1 connect). Requirements: INT-01, INT-02, INT-03.
 - Extend `webhooks` with `connected_app_id`. One webhook per connected app.
 - Scopes: `events:write`, `messages:send`, `templates:read`, `contacts:read`, `contacts:write`, `routes:read`.
 - Add a `RequireScope` middleware. A key with empty scopes keeps legacy full access.
+- A connected-app key gets only its scopes, not its creator's role (ADR-085).
 - Revoke in one transaction: app `revoked`, its keys inactive, its webhook inactive.
 - Rotate by issuing a second key. Allow at most two active keys per app.
 - Issue new keys with the `pgn_` prefix. Keep `whm_` valid.
@@ -24,5 +25,6 @@ Status: proposed (G1 connect). Requirements: INT-01, INT-02, INT-03.
 
 ## Consequences
 - `validateAPIKey` must set scopes in the request context.
-- A connected app depends on its creator user existing. Deactivating that user must not break the key; G3 tests this.
+- Deactivating the key's creator does not break the key, because the key holds scopes only (ADR-085). G3 tests this.
+- Key create, rotate and revoke are refused during impersonation (ADR-008, ADR-085).
 - The legacy API keys and webhooks pages keep working for keys without an app.

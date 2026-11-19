@@ -1,6 +1,6 @@
 # ADR-025: TonalDepth licence and access for the AGPL frontend
 
-Status: Proposed. Needs the user's decision (G1 open questions 1 and 2). Date: 2026-11-19.
+Status: Proposed. Needs the user's decision (open questions B1 and B2). Date: 2026-11-19.
 
 ## Context
 - The Polygin frontend is part of the AGPL-3.0 core. It is built into the binary and served to users.

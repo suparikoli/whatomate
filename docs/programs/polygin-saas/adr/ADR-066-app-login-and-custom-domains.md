@@ -10,7 +10,7 @@ Status: proposed (G1, module `apps`).
 
 ## Decision
 - Every app connects to `https://app.polyg.in`. The login page is the existing web login in the WebView.
-- After login, the app applies tenant branding from the `saas` branding API.
+- After login and each org switch, the app applies tenant branding from `GET /api/branding` (ADR-083).
 - SSO: the page asks the shell to open the provider in the system browser (ASWebAuthenticationSession, Custom Tabs, default browser on desktop). The callback issues a one-time code (Redis, 60 s, single use). The deep link returns it, and the WebView exchanges it for cookies.
 - Sign-out calls device delete first, then the existing logout.
 

@@ -46,6 +46,32 @@ Mark: `exists` (no work), `extend` (owner exists, add to it), `new` (nothing to 
 | APP-03 | iOS and Android apps: inbox, messaging, notifications (Capacitor) | new | new repo; needs approval (E23) |
 | APP-04 | Mobile apps show the plan and its status; buying happens on the web | new | mobile repo; no in-app purchase |
 
+## Release 1: added in the G1 merge (2026-11-19)
+
+The G1 packs imply these rows. Existing IDs are unchanged. "Pack" names the G1 pack that covers each row.
+
+| ID | Requirement | Mark | Owner and where | Pack |
+|---|---|---|---|---|
+| SAAS-10 | Send transactional email: verification, invites, billing and Superadmin notices | new | saas; sender choice is open question S5 | saas |
+| BRAND-03 | One responsive shell from 360 px, with safe areas, for web, phone and desktop | extend | fork `frontend/` layout, `tonaldepth-vue` patterns (ADR-026) | brand-ui |
+| INT-10 | Report delivery status to the sending app (`message.status` webhook) | new | fork `webhook_dispatch.go`, `updateMessageStatus` (ADR-047) | connect |
+| INT-11 | Admin reviews `needs_review` events and replays dead webhook deliveries | new | connect `internal/events`, connected apps page (ADR-046, ADR-047) | connect |
+| APP-05 | Per-user push preferences and quiet hours; per-tenant preview privacy | new | fork `internal/push` (ADR-063, ADR-084) | apps |
+| SEC-01 | Joining an existing tenant needs a signed, single-use invite. Close join-by-organization-ID | extend | fork `handlers/auth.go` `Register` (ADR-009) | saas |
+| SEC-02 | A Superadmin enters a tenant only through an audited session with a reason and expiry | extend | fork `handlers/app.go`, `auth.go` `SwitchOrg`, new `ImpersonationSession` (ADR-008) | saas |
+| SEC-03 | The WebSocket accepts only ws-subject tokens. It rejects refresh and access tokens | extend | fork `validateWSTokenFn` | apps |
+| SEC-04 | Store webhook secrets encrypted at rest. Never show them during impersonation | extend | fork `webhooks` with `internal/crypto` (ADR-040) | connect |
+| SEC-05 | Deliver webhooks durably: stored outbox, 8 retries, dead letters, replay | extend | fork `webhook_dispatch.go`, new `webhook_deliveries` (ADR-047) | connect |
+| SEC-06 | API keys carry scopes. Connected-app keys act only within their scopes | extend | fork `api_keys`, `middleware.go` (ADR-040, ADR-085) | connect |
+| SEC-07 | Sign webhooks with a timestamp, so receivers can reject replays | extend | fork `webhook_dispatch.go` (ADR-047) | connect |
+| SEC-08 | Test tenant isolation with two tenants over every endpoint | new | fork test suite | saas |
+| SEC-09 | A custom domain serves only its own tenant. Certificates issue only for verified domains | new | fork `handlers/branding.go`, `TenantDomain` (ADR-010) | saas |
+| SEC-10 | Accept Cashfree webhooks only when signed. Store each once. Map the tenant from our stored ID | new | fork `internal/billing` (ADR-005) | saas |
+| SEC-11 | Superadmins sign in with a second factor | new | fork `handlers/auth.go`; method is open question S7 | saas |
+| SEC-12 | Push payloads carry no phone numbers, media or message ids, and text only up to the tenant preview level | new | fork `internal/push` (ADR-063) | apps |
+| SEC-13 | Encrypt push tokens. Hash desktop device secrets. Revoke devices on sign-out, removal and password reset | new | fork `internal/push` (ADR-062, ADR-085) | apps |
+| SEC-14 | Verify the signup email before the tenant's first outbound send | new | fork `handlers/auth.go` (ADR-009) | saas |
+
 ## Release 2
 
 | ID | Requirement | Mark | Owner and where |

@@ -21,4 +21,4 @@ Status: proposed (G1 connect). Requirements: INT-04, INT-05.
 
 ## Consequences
 - Polygin receives more calls than with plugin-side skipping. Rate limits count them.
-- This changes the agreed wording of guard 3. It is an open question for the user.
+- This changes the agreed wording of guard 3. It is open question C1 for the user.

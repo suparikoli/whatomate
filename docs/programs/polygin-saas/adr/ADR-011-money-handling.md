@@ -5,7 +5,7 @@ Status: proposed (G1, module saas, money floor). Requirements: SAAS-04, SAAS-05.
 ## Context
 - Floats lose precision on money.
 - A plan price can change. Existing customers keep the price they agreed to until renewal terms change.
-- Tax treatment and invoices are not decided (open question 2).
+- Tax treatment and invoices are not decided (open question S2).
 
 ## Decision
 - Store every amount as a 64-bit integer in paise, with a `currency` column fixed to INR for now.

@@ -11,7 +11,8 @@ Status: proposed (G1, module `apps`).
 ## Decision
 - Add `internal/push` and `handlers/push.go` to the fork. It owns the Device entity (`push_devices`).
 - Event sites call `push.Enqueue(event)`. A worker reads Redis Stream `polygin:push`.
-- The worker applies one rule set: recipient (assigned user, as the web client does today), per-type prefs, quiet hours, presence delay, privacy render, badge.
+- The worker applies one rule set: recipient (assigned user, as the web client does today; or members with a permission for Admin types), per-type prefs, quiet hours, presence delay, privacy render, badge.
+- The type registry and recipient rules follow ADR-084. saas and connect call `push.Enqueue` directly; there is no event bus.
 - Transports: FCM HTTP v1 (existing `golang.org/x/oauth2`), APNs HTTP/2 with ES256 (existing `golang-jwt`), and `/api/push/desktop/stream` for the desktop helper.
 - The desktop stream authenticates with a per-device secret. It carries rendered notifications and badge counts only.
 

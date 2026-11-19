@@ -12,13 +12,13 @@ Status: Proposed (G1, brand-ui). Date: 2026-11-19.
 - Breakpoints: below 768 px, bottom nav and stacked list and detail; 768 to 1023 px, collapsed sidebar; 1024 px and up, full sidebar.
 - Chat, contacts, notifications and profile must work fully on phones.
 - Settings must work on tablets and phones.
-- Flow builders (chatbot, IVR) need 1024 px. Smaller screens get a notice (open question 5).
+- Flow builders (chatbot, IVR) need 1024 px. Smaller screens get a notice (open question B5).
 - Set `viewport-fit=cover`. Add safe-area tokens from `env(safe-area-inset-*)`. Apply them to the header, bottom nav, composer, toasts and dialogs.
 - Dialogs become bottom sheets below 768 px.
 - Make touch targets at least 44 by 44 px. Give every hover-only action a tap path.
 - Keep the composer above the on-screen keyboard.
-- Tauri: add a title-bar inset token, a `data-tauri-drag-region` header, and TdWindowControls on Windows and Linux.
-- Set `data-platform="web|ios|android|desktop"` on `<html>`. Do not sniff the user agent.
+- Tauri: add a title-bar inset token, a `data-tauri-drag-region` header, and TdWindowControls on Windows and Linux. Window controls need IPC that ADR-060 does not grant; open question X1 decides.
+- Set `data-platform="web|ios|android|desktop"` on `<html>`. The apps bridge adapter (`frontend/src/native/`) sets it. Do not sniff the user agent.
 - Use logical CSS properties in every TonalDepth Vue component.
 - Use no absolute asset paths. The API base URL comes from configuration.
 

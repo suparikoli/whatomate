@@ -11,7 +11,7 @@ Status: Proposed (G1, brand-ui). Date: 2026-11-19.
 
 ## Decision
 - Rename to Polygin: page title, meta, logo, favicon, layout strings, docs site text and logos, and the `App.Name` default.
-- Replace the name in locale strings with an `{appName}` parameter. It reads `App.Name`, and later the tenant display name.
+- Replace the name in locale strings with an `{appName}` parameter. It reads `App.Name`.
 - Name the binary `polygin` with `-o polygin`. Keep the `cmd/whatomate` folder.
 - Name the Docker image `polygin`. Rename the compose services.
 - Read `POLYGIN_` env variables first and fall back to `WHATOMATE_`.
@@ -19,6 +19,8 @@ Status: Proposed (G1, brand-ui). Date: 2026-11-19.
 - Future emails (billing, signup) must use `{appName}` and the tenant brand.
 - Keep: the Go module path, `cmd/whatomate`, internal Redis and queue names, test fixtures, the LICENSE text, upstream copyright notices, and a "based on Whatomate" credit in the README, docs and About.
 - Keep the Meta app name as registered (D3).
+- Key prefixes, HTTP headers, cookies and new Redis names follow ADR-087.
+- `{appName}` stays "Polygin" for every tenant. SAAS-07 does not cover a tenant product name (ADR-083).
 
 ## Alternatives
 - Rename the Go module path. Rejected: every Go file changes; every upstream merge conflicts.

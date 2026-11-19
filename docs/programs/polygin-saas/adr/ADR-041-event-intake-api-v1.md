@@ -12,7 +12,7 @@ Status: proposed (G1 connect). Requirement: INT-04.
 - Event names use `<record>.<verb>`, for example `invoice.created`.
 - Return an outcome, never an error, for a valid event: `accepted` (202); `duplicate`, `ignored_not_sender`, `ignored_synced`, `no_route` (200).
 - Keep the existing envelope. Add `code` and `details[]` to errors.
-- Error codes: `invalid_payload`, `unknown_record_type` (422); `scope_missing`, `tenant_suspended` (403); `rate_limited`, `plan_quota_exceeded` (429).
+- Error codes: `invalid_payload`, `unknown_record_type` (422); `plan_limit_reached` (402, key `events_in`); `scope_missing`, `tenant_suspended`, `tenant_blocked` (403); `rate_limited` (429). Shared codes follow ADR-082.
 - Version by path. Allow only additive changes inside v1. A breaking change gets `/api/v2` with a 12-month overlap.
 - Alias the existing routes that plugins use under `/api/v1`.
 - Publish the contract as an OpenAPI file in G3.
