@@ -1,2 +1,2 @@
-gate: G0
-G0 complete, all four decisions recorded in requirements.md. Next: G1 architecture packs per module, after user says start.
+gate: G1
+Four architect agents writing G1 packs (saas, brand-ui, connect, apps) since 2026-11-19. Next: merge shared data model, then open review page.
