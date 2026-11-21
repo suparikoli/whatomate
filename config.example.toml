@@ -9,6 +9,7 @@ name = "Whatomate"
 environment = "development"  # development, staging, production
 debug = true
 encryption_key = ""  # AES-256 key for encrypting secrets at rest (32+ chars, required in production)
+allow_registration = false  # true lets anyone with an organization ID self-register into it. Keep false; admins add users in Settings > Users.
 
 [server]
 host = "0.0.0.0"

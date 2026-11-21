@@ -103,6 +103,9 @@ type AppConfig struct {
 	Environment   string `koanf:"environment"` // development, staging, production
 	Debug         bool   `koanf:"debug"`
 	EncryptionKey string `koanf:"encryption_key"` // AES-256 key for encrypting secrets at rest
+	// AllowRegistration opens POST /api/auth/register, which lets anyone who
+	// knows an organization ID join that organization. Off by default.
+	AllowRegistration bool `koanf:"allow_registration"`
 }
 
 type ServerConfig struct {

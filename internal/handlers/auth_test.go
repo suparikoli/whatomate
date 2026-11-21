@@ -139,8 +139,31 @@ func TestApp_Login_UserWithRole(t *testing.T) {
 	assert.Equal(t, fasthttp.StatusOK, testutil.GetResponseStatusCode(req))
 }
 
+func TestApp_Register_DisabledByDefault(t *testing.T) {
+	app := newTestApp(t)
+	org := testutil.CreateTestOrganization(t, app.DB)
+	testutil.CreateTestRoleExact(t, app.DB, org.ID, "agent", true, true, nil)
+	email := testutil.UniqueEmail("register-disabled")
+
+	req := testutil.NewJSONRequest(t, map[string]any{
+		"email":           email,
+		"password":        "securepassword123",
+		"full_name":       "Uninvited User",
+		"organization_id": org.ID.String(),
+	})
+
+	err := app.Register(req)
+	require.NoError(t, err)
+	assert.Equal(t, fasthttp.StatusForbidden, testutil.GetResponseStatusCode(req))
+
+	var count int64
+	app.DB.Model(&models.User{}).Where("email = ?", email).Count(&count)
+	assert.Zero(t, count, "no user may be created while registration is disabled")
+}
+
 func TestApp_Register_Success(t *testing.T) {
 	app := newTestApp(t)
+	app.Config.App.AllowRegistration = true
 	org := testutil.CreateTestOrganization(t, app.DB)
 	email := testutil.UniqueEmail("register")
 
@@ -201,6 +224,7 @@ func TestApp_Register_Success(t *testing.T) {
 
 func TestApp_Register_EmailAlreadyExists_WrongPassword(t *testing.T) {
 	app := newTestApp(t)
+	app.Config.App.AllowRegistration = true
 	org := testutil.CreateTestOrganization(t, app.DB)
 	email := testutil.UniqueEmail("existing")
 	testutil.CreateTestUser(t, app.DB, org.ID, testutil.WithEmail(email), testutil.WithPassword("password123"))
@@ -223,6 +247,7 @@ func TestApp_Register_EmailAlreadyExists_WrongPassword(t *testing.T) {
 
 func TestApp_Register_ExistingUser_JoinsNewOrg(t *testing.T) {
 	app := newTestApp(t)
+	app.Config.App.AllowRegistration = true
 	org := testutil.CreateTestOrganization(t, app.DB)
 	email := testutil.UniqueEmail("multiorg")
 	testutil.CreateTestUser(t, app.DB, org.ID, testutil.WithEmail(email), testutil.WithPassword("password123"))
@@ -248,6 +273,7 @@ func TestApp_Register_ExistingUser_JoinsNewOrg(t *testing.T) {
 
 func TestApp_Register_InvalidRequestBody(t *testing.T) {
 	app := newTestApp(t)
+	app.Config.App.AllowRegistration = true
 
 	req := testutil.NewRequest(t)
 	req.RequestCtx.Request.SetBody([]byte("invalid json"))

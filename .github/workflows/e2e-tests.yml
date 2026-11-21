@@ -62,6 +62,7 @@ jobs:
           name = "Whatomate"
           environment = "test"
           debug = true
+          allow_registration = true  # e2e helpers create users through /api/auth/register
 
           [server]
           host = "0.0.0.0"

@@ -108,6 +108,10 @@ func (a *App) Login(r *fastglue.Request) error {
 
 // Register creates a new user in an existing organization
 func (a *App) Register(r *fastglue.Request) error {
+	if !a.Config.App.AllowRegistration {
+		return r.SendErrorEnvelope(fasthttp.StatusForbidden, "Registration is disabled. Ask your organization admin to add you.", nil, "")
+	}
+
 	var req RegisterRequest
 	if err := a.decodeRequest(r, &req); err != nil {
 		return nil
