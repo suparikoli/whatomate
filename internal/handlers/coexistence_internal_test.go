@@ -76,10 +76,18 @@ func TestWebhookHandler_history(t *testing.T) {
 	assert.Equal(t, models.DirectionIncoming, msgs[2].Direction)
 	assert.Equal(t, historyMediaPlaceholder, msgs[2].Content)
 
+	// The import writes the contact after its messages, so wait for it.
 	var contact models.Contact
-	require.NoError(t, app.DB.Where("organization_id = ? AND phone_number = ?", org.ID, customer).First(&contact).Error)
+	wantLast := time.Unix(1739300100, 0).UTC()
+	assert.Eventually(t, func() bool {
+		contact = models.Contact{}
+		if err := app.DB.Where("organization_id = ? AND phone_number = ?", org.ID, customer).First(&contact).Error; err != nil {
+			return false
+		}
+		return contact.LastMessageAt != nil && contact.LastMessageAt.UTC().Equal(wantLast)
+	}, 3*time.Second, 20*time.Millisecond)
 	require.NotNil(t, contact.LastMessageAt)
-	assert.Equal(t, time.Unix(1739300100, 0).UTC(), contact.LastMessageAt.UTC())
+	assert.Equal(t, wantLast, contact.LastMessageAt.UTC())
 
 	// Declined history sharing: logged, nothing imported, no panic.
 	postWebhook(t, app, envelope(`[{"errors":[{"code":2593109,"title":"History sync is turned off","message":"History sync is turned off"}]}]`))
